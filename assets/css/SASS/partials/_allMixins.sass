@@ -1,0 +1,134 @@
+// CLASSES
+// BACKGROUNDS
+//   gradientBg
+//   boxShadow
+// COLORS
+//   getIntensity
+//   getMiddleLightness
+//   isDarkColor
+//   isLightColor
+// FONTS
+//   toFontList
+// MEDIA QUERIES
+
+// ------------------------------------------------------------ CLASSES
+.fixedTop
+  position: fixed
+  z-index: 1000
+  top: 0
+.fullwidth
+  width: 100%
+
+// -------------------------------------------------------- BACKGROUNDS 
+// -------------------------------------------  gradientBg
+=gradientBg($c1, $c2, $s:80%, $e:100%)
+  $c2: rgba($c2, 0)
+  background: -webkit-gradient(linear, left top, right top, color-stop(0.8, $c1), color-stop(1, $c2))
+  background: -webkit-linear-gradient(left, $c1 $s, $c2 $e)
+  background: -moz-linear-gradient(left, $c1 $s, $c2 $e)
+  background: -o-linear-gradient(left, $c1 $s, $c2 $e)
+  background: -ms-linear-gradient(left, $c1 $s, $c2 $e)
+  background: linear-gradient(left, $c1 $s, $c2 $e)
+
+// --------------------------------------------- boxShadow 
+=boxShadow($c)
+  -webkit-box-shadow: 0 1px 0 rgba($c,0.4)
+  box-shadow: 0 1px 0 rgba($c,0.4)
+
+// ------------------------------------------------------------- COLORS 
+// ------------------------------------------ getIntensity 
+@function getIntensity($c)
+  @return red($c) + blue($c) + green($c)
+
+// ------------------------------------ getMiddleLightness 
+@function getMiddleLightness($c)
+  $middle_lightness: 0
+  $l: 50 - lightness($c)
+
+  @if $l > 0
+    $middle_lightness: lighten($base_color, $l)
+  @else
+    $middle_lightness: darken($base_color, -$l)
+  @return $middle_lightness
+
+// ------------------------------------------- isDarkColor 
+@function isDarkColor($c)
+  $i: getIntensity($c)
+  @if ($i < 282)
+    @return true
+  @else
+    @return false
+
+// ------------------------------------------ isLightColor 
+@function isLightColor($c)
+  $i: getIntensity($c)
+  @if ($i > 482)
+    @return true
+  @else
+    @return false
+
+// -------------------------------------------------------------- FONTS 
+// -------------------------------------------  toFontList
+@function toFontList($list)
+
+  $fontList: ()
+
+  @if length($list) > 1
+    // take out repeats and make list
+    @each $family in $list
+      @each $font in $family
+        @if not index($fontList, $font)
+          $fontList: append($fontList, $font, comma)
+
+    // shift default types sanserif, serif, monospace to end of list 
+    // (ok if they are all the same)
+    $i: index($fontList, 'serif') or index($fontList, 'sans-serif') or index($fontList, 'monospace')
+
+    @if $i
+      $fontList: append($fontList, nth($fontList, $i))
+      $fontList: set-nth($fontList, $i, null)
+
+    // TODO case mixed types, then they would get pushed to back of list in order above
+  @else
+    $fontList: $list
+
+  @return $fontList
+
+// ------------------------------------------------------ MEDIA QUERIES 
+$break-smallest: 350px !default
+$break-small: 480px !default
+$break-medium: 650px !default
+// - (when side menu drops out)
+$break-side_menu: 767px !default
+$break-large: 900px !default
+$break-big_layout: 1180px !default
+
+
+=respond-to($media, $val:max) 
+  @if $media == smallest
+    @media screen and (#{$val}-width: $break-smallest)
+      @content
+
+  @else if $media == small
+    @media screen and (#{$val}-width: $break-small)
+      @content
+
+  @else if $media == medium
+    @media screen and (#{$val}-width: $break-medium)
+      @content
+
+  @else if $media == side_menu
+    @media screen and (#{$val}-width: $break-side_menu)
+      @content
+
+  @else if $media == large 
+    @media screen and (#{$val}-width: $break-large)
+      @content
+
+  @else if $media == big_layout 
+    @media screen and (#{$val}-width: $break-big_layout)
+      @content
+
+  @else if $media
+    @media screen and (#{$val}-width: $media)
+      @content

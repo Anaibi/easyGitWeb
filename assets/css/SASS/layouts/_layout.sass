@@ -1,0 +1,118 @@
+@import "layout-defaultSettings"
+
+// ------------------------------------------- MAIN HEADER 
+#{$theme} #main-header  
+  +respond-to(medium)
+    // ------------ => fullwidth
+    padding-left: 0
+    padding-right: 0
+  // -------------------------- TITLE AND MENU
+  .header-nav
+    position: relative
+    left: 220px
+    +respond-to(side_menu)
+      // --------- => move to left
+      left: 0
+    +respond-to(medium)
+      // ------------ => fullwidth
+      float: none
+      h1
+        margin-left: 30px
+        float: left
+      ul
+        float: right
+        margin-right: 30px
+        border: none
+      li 
+        float: left
+        border: none
+        +respond-to(small)
+          margin-left: 20px
+    +respond-to(smallest)
+      // ------- => 1 centered col
+      text-align: center
+      h1
+        float: none
+        margin: 10px auto 12px auto
+      ul
+        float: none
+        display: inline-block
+
+  // -------------------------- GITHUB BUTTONS
+  .github-buttons
+    float: right
+    height: $header_height
+
+    +respond-to(large)
+      // ------- => stack in 2 rows
+      width: 168px
+      height: $header_height_2
+      top: 3px
+    +respond-to(medium)
+      // ------------------ => hide
+      display: none
+
+// -------------------------------- FIX HEADER PLACEHOLDER 
+#{$theme} #fix-placeholder
+  height: $h
+  +respond-to(smallest)
+    height: $h_2
+
+// ---------------------------------------------- SIDEMENU 
+#{$theme} .content-root
+  .menubar
+    z-index: 3000
+    
+// ----------------------------------------------- CONTENT 
+#{$theme} .content
+  +respond-to(side_menu)
+    // ---------------- => center
+    padding-left: 0
+    padding-right: 0
+    margin-left: auto
+    margin-right: auto
+    width: 80%
+  hr
+    border: 0
+    height: 3px
+    width: 18%
+    margin: 0 auto 3%
+    clear: both
+
+// -------------------------------------------------- LOGO 
+#{$theme}
+  #logo
+    position: absolute
+    left: 20px
+    bottom: 20px
+    width: $logo_footer_width
+    height: auto
+    img
+      width: 100%
+
+// --------------------------------- 3 COLUMN BACKGROUND for big layout
++respond-to(big_layout, min)
+  #{$theme} .content
+    width: 100%
+    padding-top: 0
+    padding-bottom: 0
+    h1, h2, h3, h4, h5, h6
+      width: 550px
+      margin: 0
+      padding-left: 40px
+      position: relative
+      z-index: 2
+    h1:first-child
+      padding-top: 30px
+    ul, ol
+      margin-left: 0
+      padding-left: 60px !important
+      position: relative
+      z-index: 2
+    p
+      position: relative
+      z-index: 2
+    pre
+      width: calc(100% - #{$content_width})
+    & > *:last-child
+      padding-bottom: 40px
